@@ -1,1 +1,2 @@
 relre:src\/[^\/]+\/(bin|obj)
+relre:src\/(.*)\.suo$
