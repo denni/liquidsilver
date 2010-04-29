@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+	<webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+		<metaData>
+			<type name="LiquidSilver.Extra.WebParts.WebPartsExplorer, LiquidSilver.Extra, Version=0.1.0.0, Culture=neutral, PublicKeyToken=a484f1fdc523281a" />
+			<importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+		</metaData>
+		<data>
+			<properties>
+				<property name="Title" type="string">LiquidSilver Extra - Web Parts Explorer</property>
+				<property name="Description" type="string">Explores the added Web parts under a site.</property>
+			</properties>
+		</data>
+	</webPart>
+</webParts>

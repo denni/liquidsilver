@@ -282,9 +282,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual double? GetDouble(Guid fieldId)
 		{
-			var s = GetString(fieldId);
-			return string.IsNullOrEmpty(s) ? null
-				: (double?)double.Parse(s, CultureInfo.InvariantCulture);
+			return (double?)ListItem[fieldId];
 		}
 
 		/// <summary>
@@ -328,9 +326,8 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual int? GetInt(Guid fieldId)
 		{
-			var s = GetString(fieldId);
-			return string.IsNullOrEmpty(s) ? null
-				: (int?)int.Parse(s, CultureInfo.InvariantCulture);
+			var value = ListItem[fieldId];
+			return (value == null) ? null : (int?)Convert.ToInt32(value);
 		}
 
 		/// <summary>

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C0BF1B23-0FA1-40BE-A370-4B40BA3F1696}</ProjectGuid>
+    <ProjectGuid>{14B92FFB-2D67-44E7-BEC0-8AEF421321C3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LiquidSilver</RootNamespace>
-    <AssemblyName>LiquidSilver</AssemblyName>
+    <RootNamespace>LiquidSilver.Extra</RootNamespace>
+    <AssemblyName>LiquidSilver.Extra</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
@@ -34,32 +34,31 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SharePoint, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.SharePoint.Security, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseClasses\DisposableBase.cs" />
-    <Compile Include="BaseClasses\ServiceLocatorBase.cs" />
-    <Compile Include="BaseClasses\SingletonBase.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="HgBatchItemDictionary.cs" />
-    <Compile Include="HgElevatedContext.cs" />
-    <Compile Include="HgExceptions.cs" />
-    <Compile Include="HgUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HgSecurity.cs" />
-    <Compile Include="HgEventReceiver.cs" />
-    <Compile Include="HgList.cs" />
-    <Compile Include="HgListItem.cs" />
-    <Compile Include="HgRole.cs" />
+    <Compile Include="WebParts\WebPartsExplorer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="12\TEMPLATE\FEATURES\LiquidSilver.Extra\LiquidSilver.Extra.WebParts.WebPartsExplorer.webpart" />
     <None Include="LiquidSilver.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="12\TEMPLATE\FEATURES\LiquidSilver.Extra\feature.xml" />
+    <Content Include="12\TEMPLATE\FEATURES\LiquidSilver.Extra\webparts.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
