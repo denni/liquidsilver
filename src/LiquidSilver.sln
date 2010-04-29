@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{B51B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex01-ListAndItems", "Ex01-ListAndItems\Ex01-ListAndItems.csproj", "{AEB904AC-EF05-4EE1-8608-4062122C2BC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidSilver.Extra", "LiquidSilver.Extra\LiquidSilver.Extra.csproj", "{14B92FFB-2D67-44E7-BEC0-8AEF421321C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AEB904AC-EF05-4EE1-8608-4062122C2BC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEB904AC-EF05-4EE1-8608-4062122C2BC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEB904AC-EF05-4EE1-8608-4062122C2BC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14B92FFB-2D67-44E7-BEC0-8AEF421321C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14B92FFB-2D67-44E7-BEC0-8AEF421321C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14B92FFB-2D67-44E7-BEC0-8AEF421321C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14B92FFB-2D67-44E7-BEC0-8AEF421321C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

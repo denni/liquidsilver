@@ -1,0 +1,13 @@
+﻿<!-- _lcid="1033" _version="12.0.4518" _dal="1" -->
+<!-- _LocalBinding -->
+<Feature  Id="{695D5BE4-241C-4023-BBC7-3618CC30A4D7}"
+          Title="LiquidSilver Extra"
+          Description="Provides some useful Web parts and features based on the LiquidSilver SharePoint framework."
+          Version="12.0.0.0"
+          Scope="Site"
+          xmlns="http://schemas.microsoft.com/sharepoint/">
+	<ElementManifests>
+		<ElementManifest Location="webparts.xml" />
+		<ElementFile Location="LiquidSilver.Extra.WebParts.WebPartsExplorer.webpart" />
+	</ElementManifests>
+</Feature>

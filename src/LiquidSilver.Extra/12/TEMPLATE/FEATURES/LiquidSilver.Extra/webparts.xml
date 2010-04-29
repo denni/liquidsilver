@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
+	<Module Name="WebParts" List="113" Url="_catalogs/wp">
+		<File Url="LiquidSilver.Extra.WebParts.WebPartsExplorer.webpart" Type="GhostableInLibrary">
+			<Property Name="Group" Value="LiquidSilver Extra" />
+			<Property Name="QuickAddGroups" Value="LiquidSilver Extra" />
+		</File>
+	</Module>
+</Elements>

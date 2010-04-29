@@ -1,17 +1,16 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Security;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LiquidSilver")]
-[assembly: AssemblyDescription("LiquidSilver SharePoint Framework")]
+[assembly: AssemblyTitle("LiquidSilver.Extra")]
+[assembly: AssemblyDescription("Extra Components for LiquidSilver SharePoint Framework")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Denniland")]
-[assembly: AssemblyProduct("LiquidSilver SharePoint Framework")]
-[assembly: AssemblyCopyright("Copyright © Denniland 2009-2010")]
+[assembly: AssemblyProduct("LiquidSilver.Extra")]
+[assembly: AssemblyCopyright("Copyright © Denniland 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,7 +20,7 @@ using System.Security;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("70479896-c43d-4ab5-becc-a6f5e8fcadde")]
+[assembly: Guid("edded2ec-49a1-44ba-9499-3af29d04565d")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,5 +34,3 @@ using System.Security;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.1.0.0")]
 [assembly: AssemblyFileVersion("0.1.0.0")]
-[assembly: AllowPartiallyTrustedCallers]
-[assembly: CLSCompliant(false)]
