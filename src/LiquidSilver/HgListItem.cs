@@ -327,7 +327,8 @@ namespace LiquidSilver
 		public virtual int? GetInt(Guid fieldId)
 		{
 			var value = ListItem[fieldId];
-			return (value == null) ? null : (int?)Convert.ToInt32(value);
+			return (value == null) ? null :
+				(int?)Convert.ToInt32(value, CultureInfo.InvariantCulture);
 		}
 
 		/// <summary>
