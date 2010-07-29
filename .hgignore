@@ -1,2 +1,3 @@
 relre:src\/[^\/]+\/(bin|obj)
-relre:src\/(.*)\.suo$
+relre:src\/.*\.suo$
+relre:.*\.user

@@ -59,6 +59,7 @@
   <ItemGroup>
     <Content Include="12\TEMPLATE\FEATURES\LiquidSilver.Extra\feature.xml" />
     <Content Include="12\TEMPLATE\FEATURES\LiquidSilver.Extra\webparts.xml" />
+    <Content Include="solutionid.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
