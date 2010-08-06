@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Security.Permissions;
 using System.Text;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Security;
+using Microsoft.SharePoint.Utilities;
 
 namespace LiquidSilver
 {
@@ -24,7 +26,7 @@ namespace LiquidSilver
 		/// operations. Querying more than 2000 items at once in SharePoint
 		/// will hinder the performance.
 		/// </summary>
-		const uint DefaultBatchSize = 2000;
+		const uint DefaultBatchSize = 1000;
 
 		#endregion Constants
 
@@ -191,6 +193,61 @@ namespace LiquidSilver
 		}
 
 		/// <summary>
+		/// Adds a complete folder structure to the list's root folder.
+		/// </summary>
+		/// <param name="path">The complete path of the folder structure.</param>
+		/// <returns>The last folder in the structure.</returns>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual SPFolder AddFolderStructure(string path)
+		{
+			path = path.Trim().Trim('/');
+
+			var rootFolder = List.RootFolder;
+
+			if (string.IsNullOrEmpty(path))
+				return rootFolder;
+
+			var folder = Web.GetFolder(path);
+
+			if (folder.Exists)
+				return folder;
+
+			if (!List.EnableFolderCreation)
+				throw new InvalidOperationException(string.Format(
+					CultureInfo.CurrentCulture,
+					@"The list ""{0}"" does not allow folder creation.",
+					SPUrlUtility.CombineUrl(Web.Url, rootFolder.Url)));
+
+			var parentFolder = rootFolder;
+
+			var folderPaths = path.Split('/');
+			var folderPath = rootFolder.Url;
+
+			foreach (var s in folderPaths)
+			{
+				folderPath += "/" + s;
+				folder = Web.GetFolder(folderPath);
+
+				if (folder.Exists)
+					continue;
+
+				folder = AddFolder(s, parentFolder);
+				folder.Update();
+
+				parentFolder = folder;
+			}
+
+			if (!folder.Exists)
+				throw new InvalidOperationException(string.Format(
+					CultureInfo.CurrentCulture,
+					@"Error creating the ""{0}"" folder under ""{1}"".",
+					path,
+					SPUrlUtility.CombineUrl(Web.Url, rootFolder.Url)));
+
+			return folder;
+		}
+
+		/// <summary>
 		/// Prepares to add a new item to the list. Call the
 		/// <code>Update()</code> method to actually add the item.
 		/// </summary>
@@ -199,6 +256,32 @@ namespace LiquidSilver
 		public virtual SPListItem AddItem()
 		{
 			return ItemsGenerator.Add();
+		}
+
+		/// <summary>
+		/// Gets all items from the list with paging to improve performance.
+		/// </summary>
+		/// <returns>A list of items.</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+			"CA1024:UsePropertiesWhereAppropriate"),
+		SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual IList<SPListItem> GetAllItems()
+		{
+			var result = new List<SPListItem>();
+
+			var query = new SPQuery();
+			query.RowLimit = DefaultBatchSize;
+
+			do
+			{
+				var items = List.GetItems(query);
+				result.AddRange(items.Cast<SPListItem>());
+
+				query.ListItemCollectionPosition =
+					items.ListItemCollectionPosition;
+			} while (query.ListItemCollectionPosition != null);
+
+			return result;
 		}
 
 		/// <summary>
@@ -485,6 +568,19 @@ namespace LiquidSilver
 
 		#endregion Constructors
 
+		#region CS1911 Helper Methods
+
+		/// <summary>
+		/// Prevents unverifiable code. Check <c>Compiler Warning (level 1)
+		/// CS1911</c> for more information.
+		/// </summary>
+		private IList<SPListItem> BaseGetAllItems()
+		{
+			return base.GetAllItems();
+		}
+
+		#endregion CS1911 Helper Methods
+
 		#region HgList Members
 
 		/// <summary>
@@ -493,9 +589,36 @@ namespace LiquidSilver
 		/// </summary>
 		/// <returns>A new item.</returns>
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
-		public new T AddItem()
+		public virtual new T AddItem()
 		{
 			return new T() { ListItem = base.AddItem() };
+		}
+
+		/// <summary>
+		/// Gets all items from the list.
+		/// </summary>
+		/// <returns>A series of items.</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+			"CA1024:UsePropertiesWhereAppropriate")]
+		public virtual new IEnumerable<T> GetAllItems()
+		{
+			var items = BaseGetAllItems();
+
+			foreach (var item in items)
+			{
+				yield return new T() { ListItem = item };
+			}
+		}
+
+		/// <summary>
+		/// Gets an item of the list.
+		/// </summary>
+		/// <param name="id">The ID of the item to retrieve.</param>
+		/// <returns>An item.</returns>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual T GetItem(int id)
+		{
+			return new T() { ListItem = List.GetItemById(id) };
 		}
 
 		#endregion HgList Members

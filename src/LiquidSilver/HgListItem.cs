@@ -154,6 +154,8 @@ namespace LiquidSilver
 
 		#region Field Parser Methods
 
+		#region Boolean Field
+
 		/// <summary>
 		/// Gets a <see cref="bool"/> value from a field.
 		/// </summary>
@@ -202,6 +204,10 @@ namespace LiquidSilver
 			SetBool(GetFieldId(fieldName), value);
 		}
 
+		#endregion Boolean Field
+
+		#region Calculated Field
+
 		/// <summary>
 		/// Gets a calculated value from a field.
 		/// </summary>
@@ -225,6 +231,10 @@ namespace LiquidSilver
 		{
 			return GetCalculated(GetFieldId(fieldName));
 		}
+
+		#endregion Calculated Field
+
+		#region DateTime Field
 
 		/// <summary>
 		/// Gets a <see cref="DateTime"/> value from a field.
@@ -274,6 +284,10 @@ namespace LiquidSilver
 			SetDate(GetFieldId(fieldName), value);
 		}
 
+		#endregion DateTime Field
+
+		#region Double Field
+
 		/// <summary>
 		/// Gets a <see cref="double"/> value from a field.
 		/// </summary>
@@ -317,6 +331,10 @@ namespace LiquidSilver
 		{
 			SetDouble(GetFieldId(fieldName), value);
 		}
+
+		#endregion Double Field
+
+		#region Int Field
 
 		/// <summary>
 		/// Gets an <see cref="int"/> value from a field.
@@ -363,6 +381,10 @@ namespace LiquidSilver
 		{
 			SetInt(GetFieldId(fieldName), value);
 		}
+
+		#endregion Int Field
+
+		#region Lookup Field
 
 		/// <summary>
 		/// Gets an <see cref="SPFieldLookupValue"/> value from a field.
@@ -434,6 +456,74 @@ namespace LiquidSilver
 		{
 			SetLookup(GetFieldId(fieldName), lookupId, lookupValue);
 		}
+
+		/// <summary>
+		/// Sets a lookup value to a field. This method scans the lookup
+		///		value in the lookup list.
+		/// </summary>
+		/// <param name="fieldId">The field's ID.</param>
+		/// <param name="lookupValue">The lookup value to set.</param>
+		/// <exception cref="System.ArgumentException">Thrown when the
+		///		specified field is not a valid lookup field.</exception>
+		///	<exception cref="System.ArgumentOutOfRangeException">Thrown when
+		///		the specified lookup value cannot be found in the lookup list.
+		///	</exception>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual void SetLookup(Guid fieldId, string lookupValue)
+		{
+			var lookupField = ListItem.Fields[fieldId] as SPFieldLookup;
+
+			if (lookupField == null)
+				throw new ArgumentException(
+					"The field is not a valid lookup field.");
+
+			var lookupList = ListItem.Web.Lists[new Guid(lookupField.LookupList)];
+
+			var query = new SPQuery()
+			{
+				Query = string.Format(CultureInfo.InvariantCulture,
+					@"<Where><Eq>
+						<FieldRef Name='{0}' />
+						<Value Type='Text'>{1}</Value>
+					</Eq></Where>",
+				  lookupField.LookupField,
+				  lookupValue),
+				ViewFields = @"<FieldRef Name='ID' />",
+				RowLimit = 1
+			};
+
+			var item = lookupList.GetItems(query)
+				.Cast<SPListItem>().FirstOrDefault();
+
+			if (item == null)
+				throw new ArgumentOutOfRangeException("lookupValue", lookupValue,
+					string.Format(CultureInfo.InvariantCulture,
+						@"Could not find the specified lookup value ""{0}"" in the lookup list.",
+						lookupValue));
+
+			SetLookup(fieldId, item.ID, lookupValue);
+		}
+
+		/// <summary>
+		/// Sets a lookup value to a field. This method scans the lookup
+		///		value in the lookup list.
+		/// </summary>
+		/// <param name="fieldName">The field's name.</param>
+		/// <param name="lookupValue">The lookup value to set.</param>
+		/// <exception cref="System.ArgumentException">Thrown when the
+		///		specified field is not a valid lookup field.</exception>
+		///	<exception cref="System.ArgumentOutOfRangeException">Thrown when
+		///		the specified lookup value cannot be found in the lookup list.
+		///	</exception>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual void SetLookup(string fieldName, string lookupValue)
+		{
+			SetLookup(GetFieldId(fieldName), lookupValue);
+		}
+
+		#endregion Lookup Field
+
+		#region Multiple Lookup Field
 
 		/// <summary>
 		/// Gets an <see cref="SPFieldLookupValueCollection"/> value from a field.
@@ -549,6 +639,10 @@ namespace LiquidSilver
 			SetMultipleLookup(GetFieldId(fieldName), lookupValues);
 		}
 
+		#endregion Multiple Lookup Field
+
+		#region Principal Field
+
 		/// <summary>
 		/// Gets an <see cref="SPPrincipal"/> value from a field.
 		/// </summary>
@@ -599,6 +693,10 @@ namespace LiquidSilver
 		{
 			SetPrincipal(GetFieldId(fieldName), principal);
 		}
+
+		#endregion Principal Field
+
+		#region Multiple Principal Field
 
 		/// <summary>
 		/// Gets a collection of <see cref="SPPrincipal"/> values from a field.
@@ -761,6 +859,10 @@ namespace LiquidSilver
 			SetPrincipalsFromCsv(GetFieldId(fieldName), principalsAsCsv);
 		}
 
+		#endregion Multiple Principal Field
+
+		#region String Field
+
 		/// <summary>
 		/// Gets a <see cref="string"/> value from a field.
 		/// </summary>
@@ -804,6 +906,10 @@ namespace LiquidSilver
 		{
 			SetString(GetFieldId(fieldName), value);
 		}
+
+		#endregion String Field
+
+		#region URL Field
 
 		/// <summary>
 		/// Gets an <see cref="SPFieldUrlValue"/> value from a field.
@@ -860,6 +966,8 @@ namespace LiquidSilver
 		{
 			SetUrl(GetFieldId(fieldName), url, description);
 		}
+
+		#endregion URL Field
 
 		#endregion Field Parser Methods
 

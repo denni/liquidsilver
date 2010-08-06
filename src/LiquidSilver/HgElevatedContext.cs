@@ -83,7 +83,7 @@ namespace LiquidSilver
 		/// Control access.
 		/// </summary>
 		/// <param name="code">The code to execute.</param>
-		public static void Execute(CodeToRun code)
+		public static void Execute(ElevatedCode code)
 		{
 			using (var context = new HgElevatedContext())
 			{
@@ -98,7 +98,7 @@ namespace LiquidSilver
 		/// <param name="site">The <see cref="SPSite"/> object to get the
 		///		elevated context from.</param>
 		/// <param name="code">The code to execute.</param>
-		public static void Execute(SPSite site, CodeToRun code)
+		public static void Execute(SPSite site, ElevatedCode code)
 		{
 			using (var context = new HgElevatedContext(site))
 			{
@@ -113,7 +113,7 @@ namespace LiquidSilver
 		/// <param name="web">The <see cref="SPWeb"/> object to get the
 		///		elevated context from.</param>
 		/// <param name="code">The code to execute.</param>
-		public static void Execute(SPWeb web, CodeToRun code)
+		public static void Execute(SPWeb web, ElevatedCode code)
 		{
 			using (var context = new HgElevatedContext(web))
 			{
@@ -129,7 +129,7 @@ namespace LiquidSilver
 		///		from.</param>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
 			"CA1054:UriParametersShouldNotBeStrings", MessageId = "0#")]
-		public static void Execute(string siteUrl, CodeToRun code)
+		public static void Execute(string siteUrl, ElevatedCode code)
 		{
 			using (var context = new HgElevatedContext(siteUrl))
 			{
@@ -161,5 +161,5 @@ namespace LiquidSilver
 	///		context.</param>
 	/// <param name="web">The <see cref="SPWeb"/> object from the elevated
 	///		context.</param>
-	public delegate void CodeToRun(SPSite site, SPWeb web);
+	public delegate void ElevatedCode(SPSite site, SPWeb web);
 }
