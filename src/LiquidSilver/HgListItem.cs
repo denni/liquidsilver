@@ -156,6 +156,11 @@ namespace LiquidSilver
 
 		#region Boolean Field
 
+		private static bool? GetBool(object value)
+		{
+			return (bool?)value;
+		}
+
 		/// <summary>
 		/// Gets a <see cref="bool"/> value from a field.
 		/// </summary>
@@ -166,7 +171,7 @@ namespace LiquidSilver
 		SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual bool? GetBool(Guid fieldId)
 		{
-			return (bool?)ListItem[fieldId];
+			return GetBool(ListItem[fieldId]);
 		}
 
 		/// <summary>
@@ -179,7 +184,7 @@ namespace LiquidSilver
 		SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual bool? GetBool(string fieldName)
 		{
-			return GetBool(GetFieldId(fieldName));
+			return GetBool(ListItem[fieldName]);
 		}
 
 		/// <summary>
@@ -201,12 +206,20 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual void SetBool(string fieldName, bool? value)
 		{
-			SetBool(GetFieldId(fieldName), value);
+			ListItem[fieldName] = value;
 		}
 
 		#endregion Boolean Field
 
 		#region Calculated Field
+
+		private static string GetCalculated(SPField field, object value)
+		{
+			var f = field as SPFieldCalculated;
+
+			return (f == null || value == null) ? null
+				: (f.GetFieldValueAsText((string)value));
+		}
 
 		/// <summary>
 		/// Gets a calculated value from a field.
@@ -216,9 +229,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual string GetCalculated(Guid fieldId)
 		{
-			var field = (SPFieldCalculated)ListItem.Fields[fieldId];
-			return (field == null) ? null
-				: (field.GetFieldValueAsText(GetString(fieldId)));
+			return GetCalculated(ListItem.Fields[fieldId], ListItem[fieldId]);
 		}
 
 		/// <summary>
@@ -229,12 +240,20 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual string GetCalculated(string fieldName)
 		{
-			return GetCalculated(GetFieldId(fieldName));
+			return GetCalculated(ListItem.Fields[fieldName], ListItem[fieldName]);
 		}
 
 		#endregion Calculated Field
 
 		#region DateTime Field
+
+		private static DateTime? GetDate(object value)
+		{
+			if (value == null)
+				return null;
+
+			return DateTime.Parse((string)value, CultureInfo.InvariantCulture);
+		}
 
 		/// <summary>
 		/// Gets a <see cref="DateTime"/> value from a field.
@@ -244,11 +263,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual DateTime? GetDate(Guid fieldId)
 		{
-			if (ListItem[fieldId] == null)
-				return null;
-
-			return DateTime.Parse(ListItem[fieldId].ToString(),
-				CultureInfo.InvariantCulture);
+			return GetDate(ListItem[fieldId]);
 		}
 
 		/// <summary>
@@ -259,7 +274,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual DateTime? GetDate(string fieldName)
 		{
-			return GetDate(GetFieldId(fieldName));
+			return GetDate(ListItem[fieldName]);
 		}
 
 		/// <summary>
@@ -281,7 +296,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual void SetDate(string fieldName, DateTime? value)
 		{
-			SetDate(GetFieldId(fieldName), value);
+			ListItem[fieldName] = value;
 		}
 
 		#endregion DateTime Field
@@ -307,7 +322,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual double? GetDouble(string fieldName)
 		{
-			return GetDouble(GetFieldId(fieldName));
+			return (double?)ListItem[fieldName];
 		}
 
 		/// <summary>
@@ -329,12 +344,18 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual void SetDouble(string fieldName, double? value)
 		{
-			SetDouble(GetFieldId(fieldName), value);
+			ListItem[fieldName] = value;
 		}
 
 		#endregion Double Field
 
 		#region Int Field
+
+		private static int? GetInt(object value)
+		{
+			return (value == null) ? null :
+				(int?)Convert.ToInt32(value, CultureInfo.InvariantCulture);
+		}
 
 		/// <summary>
 		/// Gets an <see cref="int"/> value from a field.
@@ -344,9 +365,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual int? GetInt(Guid fieldId)
 		{
-			var value = ListItem[fieldId];
-			return (value == null) ? null :
-				(int?)Convert.ToInt32(value, CultureInfo.InvariantCulture);
+			return GetInt(ListItem[fieldId]);
 		}
 
 		/// <summary>
@@ -357,7 +376,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual int? GetInt(string fieldName)
 		{
-			return GetInt(GetFieldId(fieldName));
+			return GetInt(ListItem[fieldName]);
 		}
 
 		/// <summary>
@@ -379,12 +398,18 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual void SetInt(string fieldName, int? value)
 		{
-			SetInt(GetFieldId(fieldName), value);
+			ListItem[fieldName] = value;
 		}
 
 		#endregion Int Field
 
 		#region Lookup Field
+
+		private static SPFieldLookupValue GetLookup(object value)
+		{
+			var s = (string)value;
+			return string.IsNullOrEmpty(s) ? null : new SPFieldLookupValue(s);
+		}
 
 		/// <summary>
 		/// Gets an <see cref="SPFieldLookupValue"/> value from a field.
@@ -394,8 +419,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual SPFieldLookupValue GetLookup(Guid fieldId)
 		{
-			var s = GetString(fieldId);
-			return string.IsNullOrEmpty(s) ? null : new SPFieldLookupValue(s);
+			return GetLookup(ListItem[fieldId]);
 		}
 
 		/// <summary>
@@ -406,7 +430,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual SPFieldLookupValue GetLookup(string fieldName)
 		{
-			return GetLookup(GetFieldId(fieldName));
+			return GetLookup(ListItem[fieldName]);
 		}
 
 		/// <summary>
@@ -428,7 +452,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual void SetLookup(string fieldName, SPFieldLookupValue value)
 		{
-			SetLookup(GetFieldId(fieldName), value);
+			ListItem[fieldName] = value;
 		}
 
 		/// <summary>
@@ -454,24 +478,12 @@ namespace LiquidSilver
 		public virtual void SetLookup(string fieldName,
 			int lookupId, string lookupValue)
 		{
-			SetLookup(GetFieldId(fieldName), lookupId, lookupValue);
+			SetLookup(fieldName, lookupId, lookupValue);
 		}
 
-		/// <summary>
-		/// Sets a lookup value to a field. This method scans the lookup
-		///		value in the lookup list.
-		/// </summary>
-		/// <param name="fieldId">The field's ID.</param>
-		/// <param name="lookupValue">The lookup value to set.</param>
-		/// <exception cref="System.ArgumentException">Thrown when the
-		///		specified field is not a valid lookup field.</exception>
-		///	<exception cref="System.ArgumentOutOfRangeException">Thrown when
-		///		the specified lookup value cannot be found in the lookup list.
-		///	</exception>
-		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
-		public virtual void SetLookup(Guid fieldId, string lookupValue)
+		private SPListItem GetLookupItem(SPField field, string lookupValue)
 		{
-			var lookupField = ListItem.Fields[fieldId] as SPFieldLookup;
+			var lookupField = field as SPFieldLookup;
 
 			if (lookupField == null)
 				throw new ArgumentException(
@@ -501,7 +513,27 @@ namespace LiquidSilver
 						@"Could not find the specified lookup value ""{0}"" in the lookup list.",
 						lookupValue));
 
-			SetLookup(fieldId, item.ID, lookupValue);
+			return item;
+		}
+
+		/// <summary>
+		/// Sets a lookup value to a field. This method scans the lookup
+		///		value in the lookup list.
+		/// </summary>
+		/// <param name="fieldId">The field's ID.</param>
+		/// <param name="lookupValue">The lookup value to set.</param>
+		/// <exception cref="System.ArgumentException">Thrown when the
+		///		specified field is not a valid lookup field.</exception>
+		///	<exception cref="System.ArgumentOutOfRangeException">Thrown when
+		///		the specified lookup value cannot be found in the lookup list.
+		///	</exception>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual void SetLookup(Guid fieldId, string lookupValue)
+		{
+			var lookupItem = GetLookupItem(ListItem.Fields[fieldId],
+				lookupValue);
+
+			SetLookup(fieldId, lookupItem.ID, lookupValue);
 		}
 
 		/// <summary>
@@ -518,7 +550,10 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual void SetLookup(string fieldName, string lookupValue)
 		{
-			SetLookup(GetFieldId(fieldName), lookupValue);
+			var lookupItem = GetLookupItem(ListItem.Fields[fieldName],
+				lookupValue);
+
+			SetLookup(fieldName, lookupItem.ID, lookupValue);
 		}
 
 		#endregion Lookup Field
@@ -550,25 +585,49 @@ namespace LiquidSilver
 		public virtual SPFieldLookupValueCollection GetMultipleLookup(
 			string fieldName)
 		{
-			return GetMultipleLookup(GetFieldId(fieldName));
+			return (SPFieldLookupValueCollection)ListItem[fieldName];
 		}
 
-		/// <summary>
-		/// Sets an <see cref="SPFieldLookupValueCollection"/> value to a field.
-		/// </summary>
-		/// <param name="fieldId">The field's ID.</param>
-		/// <param name="lookupIds">The lookup IDs to set.</param>
-		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
-		public virtual void SetMultipleLookup(Guid fieldId,
-			params int[] lookupIds)
+		private static SPFieldLookupValueCollection
+			GetFieldLookupValueCoolection(int[] lookupIds)
 		{
 			var lookups = new SPFieldLookupValueCollection();
 			foreach (var i in lookupIds)
 			{
 				lookups.Add(new SPFieldLookupValue(i, ""));
 			}
+			return lookups;
+		}
 
-			ListItem[fieldId] = lookups;
+		private static SPFieldLookupValueCollection
+			GetFieldLookupValueCoolection(string[] lookupValues)
+		{
+			var lookups = new SPFieldLookupValueCollection();
+			foreach (var s in lookupValues)
+			{
+				lookups.Add(new SPFieldLookupValue(s));
+			}
+			return lookups;
+		}
+
+		private static SPFieldLookupValueCollection GetFieldLookupValueCoolection(
+			SPFieldLookupValue[] lookupValues)
+		{
+			var lookups = new SPFieldLookupValueCollection();
+			lookups.AddRange(lookupValues);
+			return lookups;
+		}
+
+		/// <summary>
+		/// Sets an <see cref="SPFieldLookupValueCollection"/> value to a field.
+		/// </summary>
+		/// <param name="fieldId">The field's ID.</param>
+		/// <param name="lookupIds">The lookup IDs to set.</param>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual void SetMultipleLookup(Guid fieldId,
+			params int[] lookupIds)
+		{
+			ListItem[fieldId] = GetFieldLookupValueCoolection(lookupIds);
 		}
 
 		/// <summary>
@@ -580,7 +639,7 @@ namespace LiquidSilver
 		public virtual void SetMultipleLookup(string fieldName,
 			params int[] lookupIds)
 		{
-			SetMultipleLookup(GetFieldId(fieldName), lookupIds);
+			ListItem[fieldName] = GetFieldLookupValueCoolection(lookupIds);
 		}
 
 		/// <summary>
@@ -592,13 +651,7 @@ namespace LiquidSilver
 		public virtual void SetMultipleLookup(Guid fieldId,
 			params string[] lookupValues)
 		{
-			var lookups = new SPFieldLookupValueCollection();
-			foreach (var s in lookupValues)
-			{
-				lookups.Add(new SPFieldLookupValue(s));
-			}
-
-			ListItem[fieldId] = lookups;
+			ListItem[fieldId] = GetFieldLookupValueCoolection(lookupValues);
 		}
 
 		/// <summary>
@@ -610,7 +663,7 @@ namespace LiquidSilver
 		public virtual void SetMultipleLookup(string fieldName,
 			params string[] lookupValues)
 		{
-			SetMultipleLookup(GetFieldId(fieldName), lookupValues);
+			ListItem[fieldName] = GetFieldLookupValueCoolection(lookupValues);
 		}
 
 		/// <summary>
@@ -622,9 +675,7 @@ namespace LiquidSilver
 		public virtual void SetMultipleLookup(Guid fieldId,
 			params SPFieldLookupValue[] lookupValues)
 		{
-			var lookups = new SPFieldLookupValueCollection();
-			lookups.AddRange(lookupValues);
-			ListItem[fieldId] = lookups;
+			ListItem[fieldId] = GetFieldLookupValueCoolection(lookupValues);
 		}
 
 		/// <summary>
@@ -636,22 +687,16 @@ namespace LiquidSilver
 		public virtual void SetMultipleLookup(string fieldName,
 			params SPFieldLookupValue[] lookupValues)
 		{
-			SetMultipleLookup(GetFieldId(fieldName), lookupValues);
+			ListItem[fieldName] = GetFieldLookupValueCoolection(lookupValues);
 		}
 
 		#endregion Multiple Lookup Field
 
 		#region Principal Field
 
-		/// <summary>
-		/// Gets an <see cref="SPPrincipal"/> value from a field.
-		/// </summary>
-		/// <param name="fieldId">The field's ID.</param>
-		/// <returns>The field's value.</returns>
-		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
-		public virtual SPPrincipal GetPrincipal(Guid fieldId)
+		private SPPrincipal GetPrincipal(object value)
 		{
-			var s = GetString(fieldId);
+			var s = (string)value;
 			if (string.IsNullOrEmpty(s))
 				return null;
 
@@ -664,12 +709,23 @@ namespace LiquidSilver
 		/// <summary>
 		/// Gets an <see cref="SPPrincipal"/> value from a field.
 		/// </summary>
+		/// <param name="fieldId">The field's ID.</param>
+		/// <returns>The field's value.</returns>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual SPPrincipal GetPrincipal(Guid fieldId)
+		{
+			return GetPrincipal(ListItem[fieldId]);
+		}
+
+		/// <summary>
+		/// Gets an <see cref="SPPrincipal"/> value from a field.
+		/// </summary>
 		/// <param name="fieldName">The field's name.</param>
 		/// <returns>The field's value.</returns>
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual SPPrincipal GetPrincipal(string fieldName)
 		{
-			return GetPrincipal(GetFieldId(fieldName));
+			return GetPrincipal(ListItem[fieldName]);
 		}
 
 		/// <summary>
@@ -691,12 +747,28 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual void SetPrincipal(string fieldName, SPPrincipal principal)
 		{
-			SetPrincipal(GetFieldId(fieldName), principal);
+			ListItem[fieldName] = principal;
 		}
 
 		#endregion Principal Field
 
 		#region Multiple Principal Field
+
+		private IEnumerable<SPPrincipal> GetPrincipals(object value)
+		{
+			var s = (string)value;
+
+			if (string.IsNullOrEmpty(s))
+				yield break;
+
+			var userValues = new SPFieldUserValueCollection(ListItem.Web, s);
+
+			foreach (SPFieldUserValue uv in userValues)
+			{
+				yield return (SPPrincipal)uv.User
+					?? ListItem.Web.SiteGroups[uv.LookupValue];
+			}
+		}
 
 		/// <summary>
 		/// Gets a collection of <see cref="SPPrincipal"/> values from a field.
@@ -706,22 +778,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual IEnumerable<SPPrincipal> GetPrincipals(Guid fieldId)
 		{
-			var principals = new List<SPPrincipal>();
-
-			var s = GetString(fieldId);
-
-			if (string.IsNullOrEmpty(s))
-				return principals;
-
-			var userValues = new SPFieldUserValueCollection(ListItem.Web, s);
-
-			foreach (SPFieldUserValue uv in userValues)
-			{
-				principals.Add((SPPrincipal)uv.User
-					?? ListItem.Web.SiteGroups[uv.LookupValue]);
-			}
-
-			return principals;
+			return GetPrincipals(ListItem[fieldId]);
 		}
 
 		/// <summary>
@@ -732,7 +789,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual IEnumerable<SPPrincipal> GetPrincipals(string fieldName)
 		{
-			return GetPrincipals(GetFieldId(fieldName));
+			return GetPrincipals(ListItem[fieldName]);
 		}
 
 		/// <summary>
@@ -760,21 +817,13 @@ namespace LiquidSilver
 		public virtual void SetPrincipals(string fieldName,
 			SPFieldUserValueCollection principals)
 		{
-			SetPrincipals(GetFieldId(fieldName), principals);
+			ListItem[fieldName] = principals;
 		}
 
-		/// <summary>
-		/// Gets a collection of <see cref="SPPrincipal"/> values from a field
-		/// as a comma-separated values.
-		/// </summary>
-		/// <param name="fieldId">The field's ID.</param>
-		/// <returns>The comma-separated principal values.</returns>
-		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
-		public virtual string GetPrincipalsAsCsv(Guid fieldId)
+		private static string GetPrincipalsAsCsv(IEnumerable<SPPrincipal> principals)
 		{
 			var sb = new StringBuilder();
 
-			var principals = GetPrincipals(fieldId);
 			foreach (var p in principals)
 			{
 				if (sb.Length > 0)
@@ -790,21 +839,27 @@ namespace LiquidSilver
 		/// Gets a collection of <see cref="SPPrincipal"/> values from a field
 		/// as a comma-separated values.
 		/// </summary>
+		/// <param name="fieldId">The field's ID.</param>
+		/// <returns>The comma-separated principal values.</returns>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual string GetPrincipalsAsCsv(Guid fieldId)
+		{
+			return GetPrincipalsAsCsv(GetPrincipals(fieldId));
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="SPPrincipal"/> values from a field
+		/// as a comma-separated values.
+		/// </summary>
 		/// <param name="fieldName">The field's name.</param>
 		/// <returns>The comma-separated principal values.</returns>
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual string GetPrincipalsAsCsv(string fieldName)
 		{
-			return GetPrincipalsAsCsv(GetFieldId(fieldName));
+			return GetPrincipalsAsCsv(GetPrincipals(fieldName));
 		}
 
-		/// <summary>
-		/// Sets a comma-separated <see cref="SPPrincipal"/> values to a field.
-		/// </summary>
-		/// <param name="fieldId">The field's ID.</param>
-		/// <param name="principalsAsCsv">The value to set.</param>
-		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
-		public virtual void SetPrincipalsFromCsv(Guid fieldId,
+		private SPFieldUserValueCollection GetPrincipalsFromCsv(
 			string principalsAsCsv)
 		{
 			var web = ListItem.Web;
@@ -814,7 +869,7 @@ namespace LiquidSilver
 
 			foreach (string s in principals)
 			{
-				string principalName = s.Trim();
+				var principalName = s.Trim();
 
 				if (principalName.Length == 0)
 					continue;
@@ -844,7 +899,20 @@ namespace LiquidSilver
 				userValues.Add(uv);
 			}
 
-			ListItem[fieldId] = userValues;
+			return userValues;
+		}
+
+		/// <summary>
+		/// Sets a comma-separated <see cref="SPPrincipal"/> values to a field.
+		/// </summary>
+		/// <param name="fieldId">The field's ID.</param>
+		/// <param name="principalsAsCsv">The value to set.</param>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual void SetPrincipalsFromCsv(Guid fieldId,
+			string principalsAsCsv)
+		{
+
+			ListItem[fieldId] = GetPrincipalsFromCsv(principalsAsCsv);
 		}
 
 		/// <summary>
@@ -856,7 +924,7 @@ namespace LiquidSilver
 		public virtual void SetPrincipalsFromCsv(string fieldName,
 			string principalsAsCsv)
 		{
-			SetPrincipalsFromCsv(GetFieldId(fieldName), principalsAsCsv);
+			ListItem[fieldName] = GetPrincipalsFromCsv(principalsAsCsv);
 		}
 
 		#endregion Multiple Principal Field
@@ -882,7 +950,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual string GetString(string fieldName)
 		{
-			return GetString(GetFieldId(fieldName));
+			return (string)ListItem[fieldName];
 		}
 
 		/// <summary>
@@ -904,12 +972,18 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual void SetString(string fieldName, string value)
 		{
-			SetString(GetFieldId(fieldName), value);
+			ListItem[fieldName] = value;
 		}
 
 		#endregion String Field
 
 		#region URL Field
+
+		private static SPFieldUrlValue GetUrl(object value)
+		{
+			var s = (string)value;
+			return string.IsNullOrEmpty(s) ? null : new SPFieldUrlValue(s);
+		}
 
 		/// <summary>
 		/// Gets an <see cref="SPFieldUrlValue"/> value from a field.
@@ -919,9 +993,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual SPFieldUrlValue GetUrl(Guid fieldId)
 		{
-			var s = GetString(fieldId);
-
-			return string.IsNullOrEmpty(s) ? null : new SPFieldUrlValue(s);
+			return GetUrl(ListItem[fieldId]);
 		}
 
 		/// <summary>
@@ -932,7 +1004,16 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual SPFieldUrlValue GetUrl(string fieldName)
 		{
-			return GetUrl(GetFieldId(fieldName));
+			return GetUrl(ListItem[fieldName]);
+		}
+
+		private static SPFieldUrlValue GetUrlValue(string url, string description)
+		{
+			return new SPFieldUrlValue()
+			{
+				Description = description,
+				Url = url
+			};
 		}
 
 		/// <summary>
@@ -946,11 +1027,7 @@ namespace LiquidSilver
 		SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual void SetUrl(Guid fieldId, string url, string description)
 		{
-			ListItem[fieldId] = new SPFieldUrlValue()
-			{
-				Description = description,
-				Url = url
-			};
+			ListItem[fieldId] = GetUrlValue(url, description);
 		}
 
 		/// <summary>
@@ -964,7 +1041,7 @@ namespace LiquidSilver
 		SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual void SetUrl(string fieldName, string url, string description)
 		{
-			SetUrl(GetFieldId(fieldName), url, description);
+			ListItem[fieldName] = GetUrlValue(url, description);
 		}
 
 		#endregion URL Field
@@ -1016,19 +1093,10 @@ namespace LiquidSilver
 
 		#region Principals Helper Methods
 
-		/// <summary>
-		/// Compares whether two principals are equal.
-		/// </summary>
-		/// <param name="fieldId">The ID of the field containing the
-		///		principal.</param>
-		/// <param name="principalFieldValue">The principal's field value to
-		///		compare.</param>
-		/// <returns><code>true</code> if the two principals are equal.</returns>
-		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
-		public virtual bool DoesPrincipalsEqual(Guid fieldId,
+		private bool DoesPrincipalsEqual(IEnumerable<SPPrincipal> principals,
 			string principalFieldValue)
 		{
-			var principals1 = GetPrincipals(fieldId).ToList();
+			var principals1 = principals.ToList();
 
 			if (principalFieldValue.Length == 0 && principals1.Count == 0)
 				return true;
@@ -1058,6 +1126,21 @@ namespace LiquidSilver
 		/// <summary>
 		/// Compares whether two principals are equal.
 		/// </summary>
+		/// <param name="fieldId">The ID of the field containing the
+		///		principal.</param>
+		/// <param name="principalFieldValue">The principal's field value to
+		///		compare.</param>
+		/// <returns><code>true</code> if the two principals are equal.</returns>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual bool DoesPrincipalsEqual(Guid fieldId,
+			string principalFieldValue)
+		{
+			return DoesPrincipalsEqual(GetPrincipals(fieldId), principalFieldValue);
+		}
+
+		/// <summary>
+		/// Compares whether two principals are equal.
+		/// </summary>
 		/// <param name="fieldName">The name of the field containing the
 		///		principal.</param>
 		/// <param name="principalFieldValue">The principal's field value to
@@ -1067,8 +1150,7 @@ namespace LiquidSilver
 		public virtual bool DoesPrincipalsEqual(string fieldName,
 			string principalFieldValue)
 		{
-			return DoesPrincipalsEqual(GetFieldId(fieldName),
-				principalFieldValue);
+			return DoesPrincipalsEqual(GetPrincipals(fieldName), principalFieldValue);
 		}
 
 		/// <summary>
