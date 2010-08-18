@@ -188,12 +188,15 @@ namespace LiquidSilver
 		public virtual SPFolder AddFolder(string folderName, SPFolder parentFolder)
 		{
 			var query = new SPQuery { Query = "0" };
-			return List.GetItems(query).Add(parentFolder.ServerRelativeUrl,
-				SPFileSystemObjectType.Folder, folderName).Folder;
+			var item = List.GetItems(query).Add(parentFolder.ServerRelativeUrl,
+				SPFileSystemObjectType.Folder, folderName);
+			item.Update();
+			return item.Folder;
 		}
 
 		/// <summary>
-		/// Adds a complete folder structure to the list's root folder.
+		/// Adds a complete folder structure to the list's root folder. The
+		/// path must be separated by forward slashes (/), not backslashes (\).
 		/// </summary>
 		/// <param name="path">The complete path of the folder structure.</param>
 		/// <returns>The last folder in the structure.</returns>
@@ -228,11 +231,8 @@ namespace LiquidSilver
 				folderPath += "/" + s;
 				folder = Web.GetFolder(folderPath);
 
-				if (folder.Exists)
-					continue;
-
-				folder = AddFolder(s, parentFolder);
-				folder.Update();
+				if (!folder.Exists)
+					folder = AddFolder(s, parentFolder);
 
 				parentFolder = folder;
 			}
