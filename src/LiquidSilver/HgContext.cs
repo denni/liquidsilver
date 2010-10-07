@@ -78,10 +78,19 @@ namespace LiquidSilver
 		SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public HgContext(string siteUrl, bool elevateContext)
 		{
-			Site = elevateContext ?
-				HgSecurity.GetElevatedSite(siteUrl) : new SPSite(siteUrl);
+			if (elevateContext)
+			{
+				using (var site = new SPSite(siteUrl))
+				{
+					this.Site = new SPSite(siteUrl, GetSystemAccountToken(site));
+				}
+			}
+			else
+			{
+				this.Site = new SPSite(siteUrl);
+			}
 
-			Web = Site.OpenWeb();
+			this.Web = this.Site.OpenWeb();
 		}
 
 		#endregion Constructors
@@ -99,6 +108,39 @@ namespace LiquidSilver
 		public SPWeb Web { get; private set; }
 
 		#endregion Properties
+
+		#region Private Methods
+
+		/// <summary>
+		/// Gets the System Account's user token.
+		/// </summary>
+		/// <param name="site">The site context.</param>
+		/// <returns>The System Account's user token.</returns>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		private static SPUserToken GetSystemAccountToken(SPSite site)
+		{
+			site.CatchAccessDeniedException = false;
+			try
+			{
+				return site.SystemAccount.UserToken;
+			}
+			catch (UnauthorizedAccessException)
+			{
+				SPUserToken token = null;
+
+				SPSecurity.RunWithElevatedPrivileges(() =>
+				{
+					using (SPSite s = new SPSite(site.ID))
+					{
+						token = s.SystemAccount.UserToken;
+					}
+				});
+
+				return token;
+			}
+		}
+
+		#endregion Private Methods
 
 		#region Delegates
 

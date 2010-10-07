@@ -478,54 +478,6 @@ namespace LiquidSilver
 		}
 
 		#endregion Batch Methods
-
-		#region Security Context
-
-		private SPList _oldListContext;
-
-		/// <summary>
-		/// A flag that tells whether the current security context is elevated.
-		/// </summary>
-		public virtual bool IsElevated { get; private set; }
-
-		/// <summary>
-		/// Elevates the current security context so operations can be done as
-		/// the System Account.
-		/// </summary>
-		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
-		public virtual void ElevateContext()
-		{
-			//TODO: implements a routine to handle the internal references of
-			//SPRequest objects to avoid memory leak.
-
-			if (_oldListContext == null)
-			{
-				_oldListContext = this.List;
-				_list = HgSecurity.GetElevatedList(List);
-				Web = List.ParentWeb;
-
-				IsElevated = true;
-			}
-		}
-
-		/// <summary>
-		/// Restores the current security context to use the current user's
-		/// credential instead of the System Account's.
-		/// </summary>
-		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
-		public virtual void RestoreContext()
-		{
-			if (_oldListContext != null)
-			{
-				_list = _oldListContext;
-				_oldListContext = null;
-				Web = List.ParentWeb;
-
-				IsElevated = false;
-			}
-		}
-
-		#endregion Security Context
 	}
 
 	/// <summary>
