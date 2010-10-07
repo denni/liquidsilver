@@ -247,14 +247,6 @@ namespace LiquidSilver
 
 		#region DateTime Field
 
-		private static DateTime? GetDate(object value)
-		{
-			if (value == null)
-				return null;
-
-			return DateTime.Parse((string)value, CultureInfo.InvariantCulture);
-		}
-
 		/// <summary>
 		/// Gets a <see cref="DateTime"/> value from a field.
 		/// </summary>
@@ -263,7 +255,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual DateTime? GetDate(Guid fieldId)
 		{
-			return GetDate(ListItem[fieldId]);
+			return (DateTime?)ListItem[fieldId];
 		}
 
 		/// <summary>
@@ -274,7 +266,7 @@ namespace LiquidSilver
 		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		public virtual DateTime? GetDate(string fieldName)
 		{
-			return GetDate(ListItem[fieldName]);
+			return (DateTime?)ListItem[fieldName];
 		}
 
 		/// <summary>

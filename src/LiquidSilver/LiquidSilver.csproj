@@ -45,7 +45,7 @@
     <Compile Include="BaseClasses\ServiceLocatorBase.cs" />
     <Compile Include="BaseClasses\SingletonBase.cs" />
     <Compile Include="HgBatchItemDictionary.cs" />
-    <Compile Include="HgElevatedContext.cs" />
+    <Compile Include="HgContext.cs" />
     <Compile Include="HgExceptions.cs" />
     <Compile Include="HgListItemVersion.cs" />
     <Compile Include="HgUtility.cs" />
