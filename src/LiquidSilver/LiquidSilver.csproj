@@ -50,7 +50,6 @@
     <Compile Include="HgListItemVersion.cs" />
     <Compile Include="HgUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HgSecurity.cs" />
     <Compile Include="HgEventReceiver.cs" />
     <Compile Include="HgList.cs" />
     <Compile Include="HgListItem.cs" />

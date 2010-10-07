@@ -1173,49 +1173,6 @@ namespace LiquidSilver
 
 		#endregion Principals Helper Methods
 
-		#region Security Context Methods
-
-		private SPListItem _oldItemContext;
-
-		/// <summary>
-		/// A flag that tells whether the current security context is elevated.
-		/// </summary>
-		public virtual bool IsElevated { get; private set; }
-
-		/// <summary>
-		/// Elevates the current security context so operations can be done as
-		/// the System Account.
-		/// </summary>
-		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
-		public virtual void ElevateContext()
-		{
-			//TODO: implements a routine to handle the internal references of
-			//SPRequest objects to avoid memory leak.
-
-			if (_oldItemContext == null)
-			{
-				_oldItemContext = ListItem;
-				_listItem = HgSecurity.GetElevatedItem(ListItem);
-				IsElevated = true;
-			}
-		}
-
-		/// <summary>
-		/// Restores the current security context to use the current user's
-		/// credential instead of the System Account's.
-		/// </summary>
-		public virtual void RestoreContext()
-		{
-			if (_oldItemContext != null)
-			{
-				_listItem = _oldItemContext;
-				_oldItemContext = null;
-				IsElevated = false;
-			}
-		}
-
-		#endregion Security Context Methods
-
 		#region Miscellaneous Helper Methods
 
 		/// <summary>
