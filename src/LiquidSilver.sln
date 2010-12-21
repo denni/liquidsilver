@@ -9,7 +9,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex01-ListAndItems", "Ex01-L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidSilver.Extra", "LiquidSilver.Extra\LiquidSilver.Extra.csproj", "{14B92FFB-2D67-44E7-BEC0-8AEF421321C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidSilver.Tests", "LiquidSilver.Tests\LiquidSilver.Tests.csproj", "{B7649332-6A4C-4A86-8CB8-6A4368D95379}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{91DAD4B4-D0F1-4A9C-A89B-77949098FD60}"
+	ProjectSection(SolutionItems) = preProject
+		LiquidSilver.vsmdi = LiquidSilver.vsmdi
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = LiquidSilver.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -27,6 +38,10 @@ Global
 		{14B92FFB-2D67-44E7-BEC0-8AEF421321C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14B92FFB-2D67-44E7-BEC0-8AEF421321C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14B92FFB-2D67-44E7-BEC0-8AEF421321C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7649332-6A4C-4A86-8CB8-6A4368D95379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7649332-6A4C-4A86-8CB8-6A4368D95379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7649332-6A4C-4A86-8CB8-6A4368D95379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7649332-6A4C-4A86-8CB8-6A4368D95379}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
