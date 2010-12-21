@@ -470,7 +470,7 @@ namespace LiquidSilver
 		public virtual void SetLookup(string fieldName,
 			int lookupId, string lookupValue)
 		{
-			SetLookup(fieldName, lookupId, lookupValue);
+			SetLookup(fieldName, new SPFieldLookupValue(lookupId, lookupValue));
 		}
 
 		private SPListItem GetLookupItem(SPField field, string lookupValue)
