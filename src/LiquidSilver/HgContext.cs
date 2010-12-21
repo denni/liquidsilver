@@ -158,6 +158,21 @@ namespace LiquidSilver
 		}
 
 		/// <summary>
+		/// Executes the passed code in a new context that is based on the
+		/// current context.
+		/// </summary>
+		/// <param name="elevateContext">If true, the context will be
+		///		elevated.</param>
+		/// <param name="code">The code to execute.</param>
+		public static void Execute(bool elevateContext, HgContextCode code)
+		{
+			using (var context = new HgContext(elevateContext))
+			{
+				code(context.Site, context.Web);
+			}
+		}
+
+		/// <summary>
 		/// Executes the passed code in a new context.
 		/// </summary>
 		/// <param name="site">The <see cref="SPSite"/> object to get the
