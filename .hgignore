@@ -1,3 +1,5 @@
 relre:src\/[^\/]+\/(bin|obj)
 relre:src\/.*\.suo$
 relre:.*\.user
+glob:src/TestResults
+glob:src/LiquidSilver.Extra/LiquidSilver.Extra.wsp
