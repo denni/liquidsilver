@@ -43,7 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HgContextTest.cs" />
+    <Compile Include="HgListTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestListContext.cs" />
     <Compile Include="TestSettings.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -341,6 +341,60 @@ namespace LiquidSilver
 
 		#endregion Double Field
 
+		#region Guid Field
+
+		private static Guid? GetGuid(object value)
+		{
+			return (value == null) ? null :
+				(Guid?)new Guid((string)value);
+		}
+
+		/// <summary>
+		/// Gets an <see cref="Guid"/> value from a field.
+		/// </summary>
+		/// <param name="fieldId">The field's ID.</param>
+		/// <returns>The field's value.</returns>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual Guid? GetGuid(Guid fieldId)
+		{
+			return GetGuid(ListItem[fieldId]);
+		}
+
+		/// <summary>
+		/// Gets an <see cref="Guid"/> value from a field.
+		/// </summary>
+		/// <param name="fieldName">The field's name.</param>
+		/// <returns>The field's value.</returns>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual Guid? GetGuid(string fieldName)
+		{
+			return GetGuid(ListItem[fieldName]);
+		}
+
+		/// <summary>
+		/// Sets an <see cref="Guid"/> value to a field.
+		/// </summary>
+		/// <param name="fieldId">The field's ID.</param>
+		/// <param name="value">The value to set.</param>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual void SetGuid(Guid fieldId, Guid? value)
+		{
+			ListItem[fieldId] = value;
+		}
+
+		/// <summary>
+		/// Sets an <see cref="Guid"/> value to a field.
+		/// </summary>
+		/// <param name="fieldName">The field's ID.</param>
+		/// <param name="value">The value to set.</param>
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public virtual void SetGuid(string fieldName, Guid? value)
+		{
+			ListItem[fieldName] = value;
+		}
+
+		#endregion Guid Field
+
 		#region Int Field
 
 		private static int? GetInt(object value)

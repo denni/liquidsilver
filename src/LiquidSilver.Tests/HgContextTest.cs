@@ -11,8 +11,9 @@ namespace LiquidSilver.Tests
 	[TestClass()]
 	public class HgContextTest
 	{
-		private TestContext testContextInstance;
 		private string siteUrl;
+
+		private TestContext testContextInstance;
 
 		/// <summary>
 		///Gets or sets the test context which provides
@@ -62,79 +63,10 @@ namespace LiquidSilver.Tests
 		#endregion
 
 		/// <summary>
-		///A test for HgContext Constructor
+		///A test for Execute
 		///</summary>
 		[TestMethod()]
-		public void HgContextConstructorTest4()
-		{
-			try
-			{
-				using (var site = new SPSite(this.siteUrl))
-				{
-					using (var web = site.OpenWeb())
-					{
-						using (var target = new HgContext(web, false))
-						{
-							Assert.AreEqual(web.ID, target.Web.ID);
-							Assert.AreEqual(web.CurrentUser.LoginName, target.Web.CurrentUser.LoginName);
-						}
-
-						using (var target = new HgContext(web, true))
-						{
-							Assert.AreEqual(web.ID, target.Web.ID);
-
-							string saLoginName = site.SystemAccount.LoginName;
-							if (web.CurrentUser.LoginName != saLoginName)
-								Assert.AreEqual(saLoginName, target.Web.CurrentUser.LoginName);
-						}
-					}
-				}
-			}
-			catch (FileNotFoundException ex)
-			{
-				Assert.Fail(ex.Message);
-			}
-		}
-
-		/// <summary>
-		///A test for HgContext Constructor
-		///</summary>
-		[TestMethod()]
-		public void HgContextConstructorTest3()
-		{
-			try
-			{
-				using (var site = new SPSite(this.siteUrl))
-				{
-					string saLoginName = site.SystemAccount.LoginName;
-
-					using (var web = site.OpenWeb())
-					{
-						using (var target = new HgContext(this.siteUrl, false))
-						{
-							Assert.AreEqual(web.ID, target.Web.ID);
-							Assert.AreEqual(web.CurrentUser.LoginName, target.Web.CurrentUser.LoginName);
-						}
-
-						using (var target = new HgContext(this.siteUrl, true))
-						{
-							Assert.AreEqual(web.ID, target.Web.ID);
-							Assert.AreEqual(site.SystemAccount.LoginName, target.Web.CurrentUser.LoginName);
-						}
-					}
-				}
-			}
-			catch (FileNotFoundException ex)
-			{
-				Assert.Fail(ex.Message);
-			}
-		}
-
-		/// <summary>
-		///A test for HgContext Constructor
-		///</summary>
-		[TestMethod()]
-		public void HgContextConstructorTest2()
+		public void ExecuteTest2()
 		{
 			try
 			{
@@ -142,20 +74,20 @@ namespace LiquidSilver.Tests
 				{
 					SPWeb web = site.RootWeb;
 
-					using (var target = new HgContext(site, false))
+					HgContext.Execute(web, false, (s, w) =>
 					{
-						Assert.AreEqual(web.ID, target.Web.ID);
-						Assert.AreEqual(web.CurrentUser.LoginName, target.Web.CurrentUser.LoginName);
-					}
+						Assert.AreEqual(web.ID, w.ID);
+						Assert.AreEqual(web.CurrentUser.LoginName, w.CurrentUser.LoginName);
+					});
 
-					using (var target = new HgContext(site, true))
+					HgContext.Execute(web, true, (s, w) =>
 					{
-						Assert.AreEqual(web.ID, target.Web.ID);
+						Assert.AreEqual(web.ID, w.ID);
 
 						string saLoginName = site.SystemAccount.LoginName;
 						if (web.CurrentUser.LoginName != saLoginName)
-							Assert.AreEqual(saLoginName, target.Web.CurrentUser.LoginName);
-					}
+							Assert.AreEqual(saLoginName, w.CurrentUser.LoginName);
+					});
 				}
 			}
 			catch (FileNotFoundException ex)
@@ -165,56 +97,10 @@ namespace LiquidSilver.Tests
 		}
 
 		/// <summary>
-		///A test for HgContext Constructor
-		///</summary>
-		[TestMethod()]
-		public void HgContextConstructorTest1()
-		{
-			if (SPContext.Current == null || SPContext.Current.Web == null)
-			{
-				// Cannot execute this test when the context is null.
-				return;
-			}
-
-			using (var target = new HgContext())
-			{
-				Assert.IsNotNull(target.Site);
-				Assert.IsTrue(target.Web.Exists);
-			}
-		}
-
-		/// <summary>
-		///A test for HgContext Constructor
-		///</summary>
-		[TestMethod()]
-		public void HgContextConstructorTest()
-		{
-			if (SPContext.Current == null || SPContext.Current.Web == null)
-			{
-				// Cannot execute this test when the context is null.
-				return;
-			}
-
-			using (var target = new HgContext(false))
-			{
-				Assert.IsNotNull(target.Site);
-				Assert.IsTrue(target.Web.Exists);
-			}
-
-			using (var target = new HgContext(true))
-			{
-				Assert.IsNotNull(target.Site);
-				Assert.IsTrue(target.Web.Exists);
-				Assert.AreEqual(target.Site.SystemAccount.LoginName,
-					target.Web.CurrentUser.LoginName);
-			}
-		}
-
-		/// <summary>
 		///A test for Execute
 		///</summary>
 		[TestMethod()]
-		public void ExecuteTest3()
+		public void ExecuteTest1()
 		{
 			try
 			{
@@ -249,59 +135,6 @@ namespace LiquidSilver.Tests
 		///A test for Execute
 		///</summary>
 		[TestMethod()]
-		public void ExecuteTest2()
-		{
-			try
-			{
-				using (var site = new SPSite(this.siteUrl))
-				{
-					string saLoginName = site.SystemAccount.LoginName;
-
-					using (var web = site.OpenWeb())
-					{
-						using (var target = new HgContext(TestSettings.SiteUrl, false))
-						{
-							Assert.AreEqual(web.ID, target.Web.ID);
-							Assert.AreEqual(web.CurrentUser.LoginName, target.Web.CurrentUser.LoginName);
-						}
-
-						using (var target = new HgContext(TestSettings.SiteUrl, true))
-						{
-							Assert.AreEqual(web.ID, target.Web.ID);
-							Assert.AreEqual(site.SystemAccount.LoginName, target.Web.CurrentUser.LoginName);
-						}
-					}
-				}
-			}
-			catch (FileNotFoundException ex)
-			{
-				Assert.Fail(ex.Message);
-			}
-		}
-
-		/// <summary>
-		///A test for Execute
-		///</summary>
-		[TestMethod()]
-		public void ExecuteTest1()
-		{
-			if (SPContext.Current == null || SPContext.Current.Web == null)
-			{
-				// Cannot execute this test when the context is null.
-				return;
-			}
-
-			HgContext.Execute((site, web) =>
-			{
-				Assert.IsNotNull(site);
-				Assert.IsTrue(web.Exists);
-			});
-		}
-
-		/// <summary>
-		///A test for Execute
-		///</summary>
-		[TestMethod()]
 		public void ExecuteTest()
 		{
 			try
@@ -330,32 +163,6 @@ namespace LiquidSilver.Tests
 			{
 				Assert.Fail(ex.Message);
 			}
-		}
-
-		/// <summary>
-		///A test for Execute
-		///</summary>
-		[TestMethod()]
-		public void ExecuteTest4()
-		{
-			if (SPContext.Current == null || SPContext.Current.Web == null)
-			{
-				// Cannot execute this test when the context is null.
-				return;
-			}
-
-			HgContext.Execute(false, (site, web) =>
-			{
-				Assert.IsNotNull(site);
-				Assert.IsTrue(web.Exists);
-			});
-
-			HgContext.Execute(true, (site, web) =>
-			{
-				Assert.IsNotNull(site);
-				Assert.IsTrue(web.Exists);
-				Assert.AreEqual(site.SystemAccount.LoginName, web.CurrentUser.LoginName);
-			});
 		}
 	}
 }
