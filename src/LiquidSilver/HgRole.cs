@@ -9,8 +9,6 @@ namespace LiquidSilver
 	/// <summary>
 	/// Manages an SPRoleAssignmentCollection object.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming",
-		"CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Hg")]
 	public class HgRole
 	{
 		#region Properties
@@ -307,24 +305,25 @@ namespace LiquidSilver
 		/// <param name="principals">The list of principals to check from.</param>
 		/// <param name="user">The user to search.</param>
 		/// <returns>True if the list contains the user, false otherwise.</returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage(
-			"Microsoft.Performance",
-			"CA1800:DoNotCastUnnecessarily"),
-		SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
-		public static bool DoesPrincipalsContainUser(IList<SPPrincipal> principals,
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
+		public static bool DoesPrincipalsContainUser(IEnumerable<SPPrincipal> principals,
 			SPUser user)
 		{
 			foreach (SPPrincipal principal in principals)
 			{
-				if (principal is SPUser)
+				SPUser pUser = principal as SPUser;
+
+				if (pUser != null)
 				{
-					if (((SPUser)principal).LoginName.Equals(user.LoginName,
+					if (pUser.LoginName.Equals(user.LoginName,
 						StringComparison.CurrentCultureIgnoreCase))
 						return true;
 				}
-				else if (principal is SPGroup)
+				else
 				{
-					string groupName = ((SPGroup)principal).Name;
+					SPGroup pGroup = principal as SPGroup;
+
+					string groupName = pGroup.Name;
 
 					foreach (SPGroup userGroup in user.Groups)
 					{

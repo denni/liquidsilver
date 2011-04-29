@@ -9,8 +9,6 @@ namespace LiquidSilver
 	/// <summary>
 	/// Provides various utility functions.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming",
-		"CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Hg")]
 	public static class HgUtility
 	{
 		/// <summary>

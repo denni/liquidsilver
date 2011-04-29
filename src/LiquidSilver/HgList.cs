@@ -14,9 +14,6 @@ namespace LiquidSilver
 	/// <summary>
 	/// Wraps and extends the <see cref="SPList"/> class.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage(
-		"Microsoft.Naming",
-		"CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Hg")]
 	public class HgList
 	{
 		#region Constants
@@ -484,8 +481,6 @@ namespace LiquidSilver
 	/// Wraps and extends the <see cref="SPList"/> class.
 	/// </summary>
 	/// <typeparam name="T">The type of element in the list.</typeparam>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming",
-		"CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Hg")]
 	public class HgList<T> : HgList where T : HgListItem, new()
 	{
 		#region Constructors
