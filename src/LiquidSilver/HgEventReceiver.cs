@@ -7,9 +7,6 @@ namespace LiquidSilver
 	/// <summary>
 	/// Manages the EventReceivers collection.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage(
-		"Microsoft.Naming",
-		"CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Hg")]
 	public class HgEventReceiver
 	{
 		#region Properties

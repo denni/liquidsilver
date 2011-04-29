@@ -7,9 +7,7 @@ namespace LiquidSilver
 	/// The exception that is thrown when an attempt to create a new file fails
 	/// because another file with the same name already exists.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming",
-		"CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Hg"),
-	Serializable]
+	[Serializable]
 	public class HgFileExistsException : Exception
 	{
 		#region Constructors
