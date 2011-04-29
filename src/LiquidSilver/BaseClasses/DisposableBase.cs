@@ -35,9 +35,9 @@ namespace LiquidSilver
 				return;
 
 			if (disposing)
-				DisposeManagedResources();
+				ManagedResourcesDisposing();
 
-			DisposeUnmanagedResources();
+			UnmanagedResourcesDisposing();
 
 			_disposed = true;
 		}
@@ -47,14 +47,14 @@ namespace LiquidSilver
 		#region Protected Members
 
 		/// <summary>
-		/// Diposes managed resources.
+		/// Event that occurs before managed resources are disposed.
 		/// </summary>
-		protected virtual void DisposeManagedResources() { }
+		protected virtual void ManagedResourcesDisposing() { }
 
 		/// <summary>
-		/// Disposes unmanaged resources.
+		/// Event that occurs before unmanaged resources are disposed.
 		/// </summary>
-		protected virtual void DisposeUnmanagedResources() { }
+		protected virtual void UnmanagedResourcesDisposing() { }
 
 		#endregion Protected Members
 
