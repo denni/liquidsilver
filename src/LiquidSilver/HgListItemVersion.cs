@@ -11,8 +11,6 @@ namespace LiquidSilver
 	/// <summary>
 	/// Wraps and extends the <see cref="SPListItemVersion"/> class.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming",
-		"CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Hg")]
 	public class HgListItemVersion
 	{
 		#region Constructors

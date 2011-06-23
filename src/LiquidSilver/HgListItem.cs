@@ -12,8 +12,6 @@ namespace LiquidSilver
 	/// <summary>
 	/// Wraps and extends the <see cref="SPListItem"/> class.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming",
-		"CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Hg")]
 	public class HgListItem
 	{
 		#region Constructors
@@ -58,9 +56,7 @@ namespace LiquidSilver
 		/// <summary>
 		/// Gets the item's ID.
 		/// </summary>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming",
-			"CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ID")]
-		public virtual int ID
+		public virtual int Id
 		{
 			[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 			get { return ListItem.ID; }

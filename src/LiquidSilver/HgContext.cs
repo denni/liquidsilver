@@ -12,8 +12,6 @@ namespace LiquidSilver
 	/// Account credential with the Full Control access. Otherwise, they will
 	/// be executed under the current user's credential.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming",
-		"CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Hg")]
 	public static class HgContext
 	{
 		#region Private Methods
