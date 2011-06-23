@@ -8,7 +8,7 @@ namespace Ex01_ListAndItems
 {
 	class Program
 	{
-		const string SiteUrl = "http://your-server-url";
+		const string SiteUrl = "http://localhost/test";
 		const string ListName = "Actors";
 
 		static void Main(string[] args)
@@ -28,7 +28,7 @@ namespace Ex01_ListAndItems
 
 					sw.Stop();
 
-					Console.WriteLine("Elapsed time: " + sw.ElapsedMilliseconds.ToString());
+					Console.WriteLine("Elapsed time: " + sw.ElapsedMilliseconds.ToString() + " ms.");
 					Console.WriteLine("Press ENTER to continue.");
 					Console.ReadLine();
 				}
@@ -49,10 +49,11 @@ namespace Ex01_ListAndItems
 				var katie = theList.AddItem();
 				katie.Title = "Katie Holmes";
 				katie.SetDate("Dob", new DateTime(1978, 12, 18));
-				katie.SetLookup("Spouse", tom.ID, tom.Title);
+				
+				katie.SetLookup("Spouse", tom.Id, tom.Title);
 				katie.Update();
 
-				tom.SetLookup("Spouse", katie.ID, katie.Title);
+				tom.SetLookup("Spouse", katie.Id, katie.Title);
 				tom.Update();
 			}
 		}
