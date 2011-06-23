@@ -9,10 +9,7 @@ namespace LiquidSilver
 	/// A dictionary of item's fields to be updated using the
 	/// <see cref="HgList"/>.<see cref="BatchUpdate()"/> method.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage(
-		"Microsoft.Naming",
-		"CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Hg"),
-	Serializable]
+	[Serializable]
 	public class HgBatchItemDictionary : Dictionary<string, string>
 	{
 		#region Constructors
