@@ -47,6 +47,7 @@
     <Compile Include="HgBatchItemDictionary.cs" />
     <Compile Include="HgContext.cs" />
     <Compile Include="HgExceptions.cs" />
+    <Compile Include="HgImpersonationContext.cs" />
     <Compile Include="HgListItemVersion.cs" />
     <Compile Include="HgUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
