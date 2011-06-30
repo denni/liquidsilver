@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+	<webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+		<metaData>
+			<type name="LiquidSilver.Extra.WebParts.UserControlLoader, LiquidSilver.Extra, Version=0.1.0.0, Culture=neutral, PublicKeyToken=a484f1fdc523281a" />
+			<importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+		</metaData>
+		<data>
+			<properties>
+				<property name="Title" type="string">LiquidSilver Extra - UserControl Loader</property>
+				<property name="Description" type="string">Loads a UserControl.</property>
+			</properties>
+		</data>
+	</webPart>
+</webParts>
