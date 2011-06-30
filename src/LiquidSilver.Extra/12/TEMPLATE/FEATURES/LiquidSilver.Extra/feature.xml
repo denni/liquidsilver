@@ -8,6 +8,7 @@
           xmlns="http://schemas.microsoft.com/sharepoint/">
 	<ElementManifests>
 		<ElementManifest Location="webparts.xml" />
+		<ElementFile Location="LiquidSilver.Extra.WebParts.UserControlLoader.webpart" />
 		<ElementFile Location="LiquidSilver.Extra.WebParts.WebPartsExplorer.webpart" />
 	</ElementManifests>
 </Feature>

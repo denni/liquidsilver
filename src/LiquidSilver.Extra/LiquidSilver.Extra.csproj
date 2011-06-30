@@ -50,9 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebParts\UserControlLoader\IUserControlLoader.cs" />
+    <Compile Include="WebParts\UserControlLoader\UrlSelector.cs" />
+    <Compile Include="WebParts\UserControlLoader\UserControlLoaderToolPart.cs" />
+    <Compile Include="WebParts\UserControlLoader\UserControlLoader.cs" />
     <Compile Include="WebParts\WebPartsExplorer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="12\TEMPLATE\FEATURES\LiquidSilver.Extra\LiquidSilver.Extra.WebParts.UserControlLoader.webpart" />
     <None Include="12\TEMPLATE\FEATURES\LiquidSilver.Extra\LiquidSilver.Extra.WebParts.WebPartsExplorer.webpart" />
     <None Include="LiquidSilver.snk" />
   </ItemGroup>
