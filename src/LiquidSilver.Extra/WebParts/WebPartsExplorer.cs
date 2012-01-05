@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Security.Permissions;
 using System.Web.UI;
 using System.Web.UI.WebControls.WebParts;
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.Security;
 using Microsoft.SharePoint.WebControls;
+using System.Globalization;
 
 namespace LiquidSilver.Extra.WebParts
 {
@@ -56,6 +59,7 @@ namespace LiquidSilver.Extra.WebParts
 
 		#region Private Methods
 
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		private IEnumerable<WebPartInfo> GetResult()
 		{
 			var list = new WebPartInfoList();
@@ -119,7 +123,7 @@ namespace LiquidSilver.Extra.WebParts
 			foreach (var file in files)
 			{
 				if (!file.Name.EndsWith(".aspx",
-					StringComparison.InvariantCultureIgnoreCase))
+					StringComparison.OrdinalIgnoreCase))
 					continue;
 
 				if (web == null)
@@ -165,6 +169,8 @@ namespace LiquidSilver.Extra.WebParts
 		private DataTable GetResultAsDataTable()
 		{
 			var dt = new DataTable();
+			dt.Locale = CultureInfo.InvariantCulture;
+
 			var columns = dt.Columns;
 
 			columns.Add("No.", typeof(int));
@@ -181,6 +187,7 @@ namespace LiquidSilver.Extra.WebParts
 			return dt;
 		}
 
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		private Control GetResultAsGrid()
 		{
 			var grid = new SPGridView()
@@ -214,6 +221,7 @@ namespace LiquidSilver.Extra.WebParts
 
 		#region WebPart Members
 
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		protected override void CreateChildControls()
 		{
 			base.CreateChildControls();

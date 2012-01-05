@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Security.Permissions;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls.WebParts;
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.Security;
 using Microsoft.SharePoint.Utilities;
 using Microsoft.SharePoint.WebPartPages;
 
@@ -30,7 +32,15 @@ namespace LiquidSilver.Extra.WebParts
 	{
 		#region Events
 
-		public event Action<object, UserControlLoaderEventArgs<T>> UserControlCreated;
+		/// <summary>
+		/// Executes when an instance of <see cref="UserControlLoader"/> is created.
+		/// </summary>
+		/// <param name="sender">The object that triggers this event.</param>
+		/// <param name="e">The event data.</param>
+		public delegate void UserControlCreatedEventHandler(
+			object sender, UserControlLoaderEventArgs<T> e);
+
+		public event UserControlCreatedEventHandler UserControlCreated;
 
 		protected virtual void OnUserControlCreated(UserControlLoaderEventArgs<T> e)
 		{
@@ -74,6 +84,7 @@ namespace LiquidSilver.Extra.WebParts
 
 		#region WebPart Members
 
+		[SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
 		protected override void CreateChildControls()
 		{
 			try

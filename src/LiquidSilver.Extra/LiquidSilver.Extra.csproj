@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>LiquidSilver.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\LiquidSilver.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SharePoint, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SharePoint.Security, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -59,7 +60,6 @@
   <ItemGroup>
     <None Include="12\TEMPLATE\FEATURES\LiquidSilver.Extra\LiquidSilver.Extra.WebParts.UserControlLoader.webpart" />
     <None Include="12\TEMPLATE\FEATURES\LiquidSilver.Extra\LiquidSilver.Extra.WebParts.WebPartsExplorer.webpart" />
-    <None Include="LiquidSilver.snk" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="12\TEMPLATE\FEATURES\LiquidSilver.Extra\feature.xml" />
