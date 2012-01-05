@@ -19,7 +19,7 @@ namespace LiquidSilver.Extra.WebParts
 
 		#region Private Methods
 
-		private Control CreateSection(Control head, Control body)
+		private static Control CreateSection(Control head, Control body)
 		{
 			Panel headPanel = new Panel();
 			headPanel.CssClass = "UserSectionHead";
@@ -70,7 +70,6 @@ namespace LiquidSilver.Extra.WebParts
 			};
 
 			Controls.Add(CreateSection(l, urlTextBox));
-
 
 			RadioButtonList urlRelativenessList = new RadioButtonList()
 			{

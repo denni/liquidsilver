@@ -13,7 +13,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>LiquidSilver.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\LiquidSilver.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,9 +55,6 @@
     <Compile Include="HgList.cs" />
     <Compile Include="HgListItem.cs" />
     <Compile Include="HgRole.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LiquidSilver.snk" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Properties\CustomDictionary.xml" />

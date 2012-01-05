@@ -36,7 +36,7 @@ namespace LiquidSilver.Extra.WebParts
 				return _webPart;
 			}
 		}
-		private IUserControlLoader _webPart = null;
+		private IUserControlLoader _webPart;
 
 		#endregion Properties
 
